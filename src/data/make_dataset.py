@@ -1,6 +1,7 @@
 import pandas as pd
 import re
-
+from nltk.corpus import stopwords
+import redditcleaner
 
 
 def cleancsv(input_filepath, output_filepath):
@@ -8,6 +9,9 @@ def cleancsv(input_filepath, output_filepath):
 
     #filtering out entries that have no text
     df = df[df['selftext'].notnull()]
+
+    #filtering out entries that have no title
+    df = df[df['title'].notnull()]
 
     #converting to time stamp and dropping unnecessary columns
     df['time_created'] = pd.to_datetime(df['created_utc'], unit='s')
@@ -19,21 +23,33 @@ def cleancsv(input_filepath, output_filepath):
     df = df.loc[df['selftext'] != '']
 
     #processing text
-    #removing strings that have urls
-    df['processed_text'] = df['selftext'].map(lambda x: re.sub(r'(?:(?:http|https):\/\/)?([-a-zA-Z0-9.]{2,256}\.[a-z]{2,4})\b(?:\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?',"",x,flags=re.MULTILINE))
-    #df['processed_text'] = df['selftext'].map(lambda x: re.sub(r'^www\/\/.*[\r\n]*','', x, flags=re.MULTILINE))
+    df['processed_text'] = df['selftext'].map(redditcleaner.clean)
 
     #removing blank comments
     df = df.loc[df['processed_text'] != '']
 
     #removing puncutation
-    df['processed_text'] = df['processed_text'].map(lambda x: re.sub('[,\.!?]', '', x))
+    df['processed_text'] = df['processed_text'].map(lambda x: re.sub('[,;\!?]', '', x))
+
+    #removing any missed urls
+    df['processed_text'] = df['processed_text'].map(lambda x: re.sub(r'(?:(?:http|https):\/\/)?([-a-zA-Z0-9.]{2,256}\.[a-z]{2,4})\b(?:\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?',"",x,flags=re.MULTILINE))
+   
+    #removing puncutation
+    df['processed_text'] = df['processed_text'].map(lambda x: re.sub('[,;\.!?]', '', x))
 
     #fixing apostrophes
     #df['processed_text'] = df['processed_text'].replace({"â€™" : "'"}, regex=True)
 
     #lowercasing all the words
     df['processed_text'] = df['processed_text'].map(lambda x: x.lower())
+
+    #removing stopwords
+    stop = stopwords.words('english')
+    df['processed_text'] = df['processed_text'].apply(lambda x: ' '.join([item for item in str.split(x) if item not in stop]))
+
+    #removing posts that have any NAs or blank commends
+    df = df.loc[df['processed_text'] != '']
+    df = df.dropna()
 
     #printing out the first 5 rows
     print(df.head())
