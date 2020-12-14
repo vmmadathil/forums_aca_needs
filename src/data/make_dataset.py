@@ -22,6 +22,11 @@ def cleancsv(input_filepath, output_filepath):
     df = df.loc[df['selftext'] != '[removed]']
     df = df.loc[df['selftext'] != '']
 
+    #removing rows that are deleted, removed, and blank titles
+    df = df.loc[df['title'] != '[deleted]']
+    df = df.loc[df['title'] != '[removed]']
+    df = df.loc[df['title'] != '']
+
     #processing text
     df['processed_text'] = df['selftext'].map(redditcleaner.clean)
 
@@ -51,7 +56,38 @@ def cleancsv(input_filepath, output_filepath):
     df = df.loc[df['processed_text'] != '']
     df = df.dropna()
 
-    #printing out the first 5 rows
+    #---------------------------------------------------
+    #---------------------------------------------------
+    #now doing the same process for titles 
+
+    #processing text
+    df['processed_title'] = df['title'].map(redditcleaner.clean)
+
+    #removing blank comments
+    df = df.loc[df['processed_title'] != '']
+
+    #removing puncutation
+    df['processed_title'] = df['processed_title'].map(lambda x: re.sub('[,;\!?]', '', x))
+
+    #removing any missed urls
+    df['processed_title'] = df['processed_title'].map(lambda x: re.sub(r'(?:(?:http|https):\/\/)?([-a-zA-Z0-9.]{2,256}\.[a-z]{2,4})\b(?:\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?',"",x,flags=re.MULTILINE))
+   
+    #removing puncutation
+    df['processed_title'] = df['processed_title'].map(lambda x: re.sub('[,;\.!?]', '', x))
+
+    #lowercasing all the words
+    df['processed_title'] = df['processed_title'].map(lambda x: x.lower())
+
+    #removing stopwords
+    stop = stopwords.words('english')
+    df['processed_title'] = df['processed_title'].apply(lambda x: ' '.join([item for item in str.split(x) if item not in stop]))
+
+    #removing posts that have any NAs or blank commends
+    df = df.loc[df['processed_title'] != '']
+    df = df.dropna()
+
+
+    #printing out the first 5 rows 
     print(df.head())
 
     #printing to csv
