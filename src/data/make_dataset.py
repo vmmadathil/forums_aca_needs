@@ -103,7 +103,7 @@ def main(input_filepath, output_filepath):
     cleancsv(input_filepath, output_file)
 
 if __name__ == '__main__':
-    input_file = '../../data/raw/raw_reddit_scrap.csv'
-    output_file = '../../data/processed/cleaned_reddit_data.csv'
+    input_file = '../../data/raw/raw_reddit_scrape_2.csv'
+    output_file = '../../data/processed/cleaned_reddit_data_2.csv'
 
     main(input_file, output_file)
