@@ -1,7 +1,9 @@
 Online Forums & ACA Information Needs
 ==============================
 
-This project will attempt to see if one can glean information from Reddit that give insight into the informational needs of people attempting to enroll in healthcare plans afforded under the ACA
+This project will attempt to see if one can glean information from Reddit that give insight into the informational needs of people attempting to enroll in healthcare plans afforded under the ACA.
+
+Question: What do Online Forum posts tell us about people's informational needs as it relates to the ACA?
 
 Project Organization
 ------------
