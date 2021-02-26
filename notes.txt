@@ -1,0 +1,9 @@
+2/25
+
+before:
+- today I need to make sense of these topics -- pick good topics to choose
+- if i get a good number of topics, I move to writing the paper itself
+
+after:
+- I decided to add not just the titles but also the text of the posts -- I think it makes more sense to include more information
+- I now need to label these topics now that the text has been expanded
