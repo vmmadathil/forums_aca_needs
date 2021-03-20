@@ -82,6 +82,8 @@ def cleancsv(input_filepath, output_filepath):
     stop = stopwords.words('english')
     df['processed_title'] = df['processed_title'].apply(lambda x: ' '.join([item for item in str.split(x) if item not in stop]))
 
+    #removing 
+
     #removing posts that have any NAs or blank commends
     df = df.loc[df['processed_title'] != '']
     df = df.dropna()

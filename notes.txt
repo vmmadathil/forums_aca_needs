@@ -7,3 +7,14 @@ before:
 after:
 - I decided to add not just the titles but also the text of the posts -- I think it makes more sense to include more information
 - I now need to label these topics now that the text has been expanded
+
+3/19
+
+general:
+- I need to work on this more
+
+before:
+- going to be working on labeling all of the text today
+
+after:
+- ended up just doing some more text cleaning
