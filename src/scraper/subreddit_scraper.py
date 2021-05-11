@@ -9,7 +9,7 @@ api = PushshiftAPI()
 
 #calling the function to fetch all the posts
 gen = api.search_submissions(subreddit= 'HealthInsurance',
-                             after= 1356998400,
+                             after= 1388556000,
                              filter = ['url', 'title', 'selftext', 'created_utc'])
 
 
@@ -21,6 +21,6 @@ print(df.info())
 print('finished scraping, saving to csv')
 
 #print to a csv
-df.to_csv('../../data/raw/raw_reddit_scrape_2.csv')
+df.to_csv('../../data/raw/raw_reddit_scrape_3.csv', index=False)
 
 print('saved to csv')

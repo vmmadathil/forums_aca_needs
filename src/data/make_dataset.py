@@ -42,6 +42,9 @@ def cleancsv(input_filepath, output_filepath):
     #removing puncutation
     df['processed_text'] = df['processed_text'].map(lambda x: re.sub('[,;\.!?]', '', x))
 
+    #removing parentheses
+    df['processed_text'] = df['processed_text'].map(lambda x: re.sub('[()]' ,'', x))
+
     #fixing apostrophes
     #df['processed_text'] = df['processed_text'].replace({"â€™" : "'"}, regex=True)
 
@@ -51,6 +54,9 @@ def cleancsv(input_filepath, output_filepath):
     #removing stopwords
     stop = stopwords.words('english')
     df['processed_text'] = df['processed_text'].apply(lambda x: ' '.join([item for item in str.split(x) if item not in stop]))
+
+    #removing abbreviations
+    df['processed_text'] = df['processed_text'].map(lambda x: re.sub('y/o' ,'year old', x))
 
     #removing posts that have any NAs or blank commends
     df = df.loc[df['processed_text'] != '']
@@ -78,6 +84,12 @@ def cleancsv(input_filepath, output_filepath):
     #lowercasing all the words
     df['processed_title'] = df['processed_title'].map(lambda x: x.lower())
 
+    #removing parentheses and brackets
+    df['processed_title'] = df['processed_title'].map(lambda x: re.sub('[()]' ,'', x))
+    df['processed_title'] = df['processed_title'].map(lambda x: re.sub('[\[\]]' ,'', x))
+
+    #removing abbreviations
+    df['processed_title'] = df['processed_title'].map(lambda x: re.sub('y/o' ,'year old', x))
 
     #removing posts that have any NAs or blank commends
     df = df.loc[df['processed_title'] != '']
