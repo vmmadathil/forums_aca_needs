@@ -78,16 +78,14 @@ def cleancsv(input_filepath, output_filepath):
     #lowercasing all the words
     df['processed_title'] = df['processed_title'].map(lambda x: x.lower())
 
-    #removing stopwords
-    stop = stopwords.words('english')
-    df['processed_title'] = df['processed_title'].apply(lambda x: ' '.join([item for item in str.split(x) if item not in stop]))
-
-    #removing 
 
     #removing posts that have any NAs or blank commends
     df = df.loc[df['processed_title'] != '']
     df = df.dropna()
 
+    #removing stopwords
+    stop = stopwords.words('english')
+    df['processed_title_no_stop'] = df['processed_title'].apply(lambda x: ' '.join([item for item in str.split(x) if item not in stop]))
 
     #printing out the first 5 rows 
     print(df.head())
@@ -105,7 +103,7 @@ def main(input_filepath, output_filepath):
     cleancsv(input_filepath, output_file)
 
 if __name__ == '__main__':
-    input_file = '../../data/raw/raw_reddit_scrape_2.csv'
-    output_file = '../../data/processed/cleaned_reddit_data_2.csv'
+    input_file = '../../data/raw/raw_reddit_scrape_3.csv'
+    output_file = '../../data/processed/cleaned_reddit_data_3.csv'
 
     main(input_file, output_file)
